@@ -9,4 +9,5 @@ public interface IRestaurantService {
     List<Restaurant> getAll();
     void createRestaurant(Restaurant restaurant);
     void deleteRestaurant(Long restaurantId);
+    Restaurant getById(Long restaurantId);
 }

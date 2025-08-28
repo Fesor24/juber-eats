@@ -32,7 +32,7 @@ public class OpenAPIConfig {
 
         Info info = new Info()
                 .title("Juber Eats API")
-                .version("1.0")
+                //.version("1.0")
                 .description("Juber Eats API endpoints documentation")
                 .license(license)
                 .contact(contact);

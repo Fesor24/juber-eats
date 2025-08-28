@@ -39,4 +39,15 @@ public class RestaurantService implements IRestaurantService {
 
        this.restaurantRepository.delete(restaurant);
     }
+
+    @Override
+    public Restaurant getById(Long restaurantId) {
+        Optional<Restaurant> restaurantOpt = this.restaurantRepository
+                .findById(restaurantId);
+
+        return restaurantOpt
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Restaurant not found"));
+    }
 }

@@ -28,6 +28,20 @@ public class RestaurantController {
         HttpStatus.OK);
     }
 
+    @GetMapping("/v1/public/restaurant/{restaurantId}")
+    public ResponseEntity getById(
+            @Parameter(description = "ID of restaurant to be fetched", required = true)
+            @PathVariable Long restaurantId
+    ){
+        try{
+            return new ResponseEntity<>(this.restaurantService.getById(restaurantId),
+                    HttpStatus.OK);
+        }
+        catch(ResponseStatusException e){
+            return new ResponseEntity<>(e.getReason(), e.getStatusCode());
+        }
+    }
+
     @PostMapping("/admin/restaurant")
     public ResponseEntity create(Restaurant restaurant){
         this.restaurantService.createRestaurant(restaurant);
