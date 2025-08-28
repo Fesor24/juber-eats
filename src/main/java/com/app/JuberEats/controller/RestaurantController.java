@@ -22,6 +22,13 @@ public class RestaurantController {
         HttpStatus.OK);
     }
 
+    @PostMapping("/public/restaurant")
+    public ResponseEntity create(Restaurant restaurant){
+        this.restaurantService.createRestaurant(restaurant);
+
+        return new ResponseEntity<>("", HttpStatus.CREATED);
+    }
+
     @DeleteMapping("/admin/restaurant/{restaurantId}")
     public ResponseEntity delete(@PathVariable Long restaurantId){
         try{
