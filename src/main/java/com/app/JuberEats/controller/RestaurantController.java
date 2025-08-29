@@ -1,10 +1,13 @@
 package com.app.JuberEats.controller;
 
 import com.app.JuberEats.entity.Restaurant;
+import com.app.JuberEats.primitives.ResultT;
 import com.app.JuberEats.service.IRestaurantService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,15 +26,15 @@ public class RestaurantController {
     @Operation(summary = "Returns list of restaurants",
         description = "Endpoint to return all list of restaurants")
     @GetMapping("/v1/restaurants")
-    public ResponseEntity<List<Restaurant>> getAll(){
-        return new ResponseEntity<List<Restaurant>>(this.restaurantService.getAll(),
-        HttpStatus.OK);
+    public ResponseEntity<ResultT<List<Restaurant>>> getAll(){
+        return new ResponseEntity<ResultT<List<Restaurant>>>(
+                new ResultT<List<Restaurant>>(this.restaurantService.getAll()), HttpStatus.OK);
     }
 
     @GetMapping("/v1/public/restaurant/{restaurantId}")
     public ResponseEntity getById(
             @Parameter(description = "ID of restaurant to be fetched", required = true)
-            @PathVariable Long restaurantId
+            @PathVariable @Min(1) Long restaurantId
     ){
         try{
             return new ResponseEntity<>(this.restaurantService.getById(restaurantId),
@@ -43,7 +46,9 @@ public class RestaurantController {
     }
 
     @PostMapping("/admin/restaurant")
-    public ResponseEntity create(Restaurant restaurant){
+    public ResponseEntity create(
+            @Valid
+            @RequestBody Restaurant restaurant){
         this.restaurantService.createRestaurant(restaurant);
 
         return new ResponseEntity<>("", HttpStatus.CREATED);
@@ -52,7 +57,7 @@ public class RestaurantController {
     @DeleteMapping("/admin/restaurant/{restaurantId}")
     public ResponseEntity delete(
             @Parameter(description = "ID of restaurant to be deleted", required = true)
-            @PathVariable Long restaurantId){
+            @PathVariable @Min(1) Long restaurantId){
         try{
             return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
         } catch (ResponseStatusException e) {

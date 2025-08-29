@@ -1,6 +1,7 @@
 package com.app.JuberEats.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,6 @@ public class Restaurant {
     private Long restaurantId;
 
     @Column(name = "name")
+    @NotBlank
     private String name;
 }
