@@ -5,6 +5,10 @@ import com.app.JuberEats.primitives.ResultT;
 import com.app.JuberEats.service.IRestaurantService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -23,6 +27,11 @@ public class RestaurantController {
     @Autowired
     private IRestaurantService restaurantService;
 
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResultT.class))})
+    })
     @Operation(summary = "Returns list of restaurants",
         description = "Endpoint to return all list of restaurants")
     @GetMapping("/v1/restaurants")
@@ -36,13 +45,8 @@ public class RestaurantController {
             @Parameter(description = "ID of restaurant to be fetched", required = true)
             @PathVariable @Min(1) Long restaurantId
     ){
-        try{
-            return new ResponseEntity<>(this.restaurantService.getById(restaurantId),
-                    HttpStatus.OK);
-        }
-        catch(ResponseStatusException e){
-            return new ResponseEntity<>(e.getReason(), e.getStatusCode());
-        }
+        return new ResponseEntity<>(this.restaurantService.getById(restaurantId),
+                HttpStatus.OK);
     }
 
     @PostMapping("/admin/restaurant")
@@ -54,14 +58,18 @@ public class RestaurantController {
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
 
+    @ApiResponses({
+            @ApiResponse(responseCode = "404",
+                    content = {@Content(mediaType = "application/json")},
+                    description = "Restaurant not found")
+    })
     @DeleteMapping("/admin/restaurant/{restaurantId}")
     public ResponseEntity delete(
             @Parameter(description = "ID of restaurant to be deleted", required = true)
             @PathVariable @Min(1) Long restaurantId){
-        try{
-            return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
-        } catch (ResponseStatusException e) {
-            return new ResponseEntity<>(e.getReason(), e.getStatusCode());
-        }
+
+        this.restaurantService.deleteRestaurant(restaurantId);
+
+        return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
     }
 }

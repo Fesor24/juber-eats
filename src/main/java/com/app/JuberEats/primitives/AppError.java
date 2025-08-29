@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Getter
@@ -13,9 +12,14 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppError {
-    public static AppError None = new AppError("", "", new HashMap<>());
+    public static AppError None = new AppError("", "");
 
     private String code;
     private String message;
     private Map<String, String> validationErrors;
+
+    public AppError(String code, String message){
+        this.code = code;
+        this.message = message;
+    }
 }

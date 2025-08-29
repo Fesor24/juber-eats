@@ -1,11 +1,10 @@
 package com.app.JuberEats.service;
 
 import com.app.JuberEats.entity.Restaurant;
+import com.app.JuberEats.exceptions.NotFoundException;
 import com.app.JuberEats.repositories.IRestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +16,6 @@ public class RestaurantService implements IRestaurantService {
 
     @Override
     public List<Restaurant> getAll() {
-
         return this.restaurantRepository.findAll();
     }
 
@@ -28,14 +26,12 @@ public class RestaurantService implements IRestaurantService {
 
     @Override
     public void deleteRestaurant(Long restaurantId) {
-
         Optional<Restaurant> restaurantOpt = this.restaurantRepository
                 .findById(restaurantId);
 
         Restaurant restaurant = restaurantOpt
                 .orElseThrow(() ->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "Restaurant not found"));
+                        new NotFoundException("Restaurant with ID: " +  restaurantId + " not found"));
 
        this.restaurantRepository.delete(restaurant);
     }
@@ -47,7 +43,6 @@ public class RestaurantService implements IRestaurantService {
 
         return restaurantOpt
                 .orElseThrow(() ->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Restaurant not found"));
+                        new NotFoundException("Restaurant with ID:" + restaurantId + " not found"));
     }
 }
