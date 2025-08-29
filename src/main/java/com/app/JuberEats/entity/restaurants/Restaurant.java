@@ -1,4 +1,4 @@
-package com.app.JuberEats.entity;
+package com.app.JuberEats.entity.restaurants;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

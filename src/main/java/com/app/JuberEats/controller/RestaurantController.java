@@ -1,7 +1,11 @@
 package com.app.JuberEats.controller;
 
-import com.app.JuberEats.entity.Restaurant;
 import com.app.JuberEats.primitives.ResultT;
+import com.app.JuberEats.request.restaurant.CreateRestaurantRequest;
+import com.app.JuberEats.request.restaurant.SearchRestaurantRequestParams;
+import com.app.JuberEats.response.PaginatedList;
+import com.app.JuberEats.response.restaurant.GetRestaurantResponse;
+import com.app.JuberEats.response.restaurant.SearchRestaurantResponse;
 import com.app.JuberEats.service.IRestaurantService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -33,27 +36,35 @@ public class RestaurantController {
                             schema = @Schema(implementation = ResultT.class))})
     })
     @Operation(summary = "Returns list of restaurants",
-        description = "Endpoint to return all list of restaurants")
+        description = "Search endpoint to return list of restaurants")
     @GetMapping("/v1/restaurants")
-    public ResponseEntity<ResultT<List<Restaurant>>> getAll(){
-        return new ResponseEntity<ResultT<List<Restaurant>>>(
-                new ResultT<List<Restaurant>>(this.restaurantService.getAll()), HttpStatus.OK);
+    public ResponseEntity<ResultT<PaginatedList<SearchRestaurantResponse>>> search(SearchRestaurantRequestParams request){
+        PaginatedList<SearchRestaurantResponse> paginatedList = restaurantService.search(request);
+
+        ResultT<PaginatedList<SearchRestaurantResponse>> response = new ResultT<>(paginatedList);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Returns restaurant by an identifier",
+        description = "Endpoint to return a restaurant using an identifier")
     @GetMapping("/v1/public/restaurant/{restaurantId}")
-    public ResponseEntity getById(
+    public ResponseEntity<ResultT<GetRestaurantResponse>> getById(
             @Parameter(description = "ID of restaurant to be fetched", required = true)
             @PathVariable @Min(1) Long restaurantId
     ){
-        return new ResponseEntity<>(this.restaurantService.getById(restaurantId),
+        return new ResponseEntity<>(
+                new ResultT<>(this.restaurantService.getById(restaurantId)),
                 HttpStatus.OK);
     }
 
+    @Operation(summary = "Endpoint to create a restaurant",
+    description = "Endpoint to create a restaurant")
     @PostMapping("/admin/restaurant")
     public ResponseEntity create(
             @Valid
-            @RequestBody Restaurant restaurant){
-        this.restaurantService.createRestaurant(restaurant);
+            @RequestBody CreateRestaurantRequest request){
+        this.restaurantService.createRestaurant(request);
 
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }
