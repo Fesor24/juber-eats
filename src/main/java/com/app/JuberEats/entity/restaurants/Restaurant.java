@@ -16,9 +16,9 @@ import java.util.List;
 @Entity(name = "restaurants")
 public class Restaurant {
     @Id
-    @Column(name = "restaurant_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long restaurantId;
+    private Long id;
 
     @Column(name = "name")
     @NotBlank

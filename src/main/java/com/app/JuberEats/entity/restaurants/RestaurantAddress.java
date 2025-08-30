@@ -10,8 +10,7 @@ import lombok.*;
 public class RestaurantAddress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "restaurant_address_id")
-    private Long restaurantAddressId;
+    private Long id;
     @Column
     private String description;
     @Column

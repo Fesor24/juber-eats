@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Restaurant API", description = "Restaurant API endpoints")
+@Tag(name = "Restaurant", description = "Restaurant API endpoints")
 @RestController()
 @RequestMapping("/api")
 public class RestaurantController {

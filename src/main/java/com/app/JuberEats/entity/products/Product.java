@@ -10,18 +10,24 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Entity(name = "products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long productId;
-    @NotEmpty
+    public Long id;
+
+    @Column(length = 100, nullable = false)
     private String name;
+
+    @Column(nullable = true)
     private String description;
+
     private ProductType type;
+
     @Column(precision = 19, scale = 2)
     private BigDecimal price;
+
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id")
+    @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 }
