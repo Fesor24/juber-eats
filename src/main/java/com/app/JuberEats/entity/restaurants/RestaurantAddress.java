@@ -1,5 +1,6 @@
 package com.app.JuberEats.entity.restaurants;
 
+import com.app.JuberEats.config.SchemaConstants;
 import jakarta.persistence.*;
 import lombok.*;
 

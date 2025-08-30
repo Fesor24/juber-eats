@@ -1,5 +1,6 @@
 package com.app.JuberEats.entity.restaurants;
 
+import com.app.JuberEats.config.SchemaConstants;
 import com.app.JuberEats.entity.products.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
