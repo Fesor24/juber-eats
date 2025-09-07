@@ -38,22 +38,10 @@ public class ProductService implements IProductService {
     public GetProductResponse getById(Long productId) {
         Optional<Product> productOpt = productRepository.findById(productId);
 
-        List<ShoppingCartItem> items = new ArrayList<>();
-        items.add(new ShoppingCartItem(3, "Ewa goiyin", 4, "African Palace", 3));
-
-        ShoppingCart cart = new ShoppingCart("wale-cart-01", items);
-
-        cacheService.save("ShoppingCart:wale", cart);
-
-        Optional<ShoppingCart> waleCart = cacheService.getItem("ShoppingCart:wale", ShoppingCart.class);
-
-        if(waleCart.isPresent()){
-            System.out.println(waleCart.get().getId() + " is the cart ID");
-        }
-
         return productOpt
                 .map((prd) -> mapper.map(prd, GetProductResponse.class))
-                .orElseThrow(() -> new NotFoundException("Product with ID: " + productId + " not found"));
+                .orElseThrow(() ->
+                        new NotFoundException("Product with ID: " + productId + " not found"));
     }
 
     @Override

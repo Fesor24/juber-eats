@@ -17,7 +17,7 @@ public class Result {
     public Result(){
         isSuccess = true;
         isFailure = false;
-        error = AppError.None;
+        error = null;
     }
 
     public Result(AppError error){
