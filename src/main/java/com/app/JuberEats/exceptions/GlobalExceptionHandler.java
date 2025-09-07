@@ -42,4 +42,11 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<Result>(new Result(appError), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<Result> handleBadRequestException(BadRequestException ex){
+        AppError appError = new AppError("bad.request", ex.getMessage());
+
+        return new ResponseEntity<>(new Result(appError), HttpStatus.BAD_REQUEST);
+    }
 }

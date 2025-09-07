@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShoppingCartItemResponse {
-    private Integer productId;
+    private Long productId;
     private String productName;
-    private Integer restaurantId;
+    private Long restaurantId;
     private String restaurantName;
     private Integer quantity;
 }

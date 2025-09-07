@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateShoppingCartItemRequest {
-    private Integer productId;
-    private Integer restaurantId;
+    private Long productId;
+    private Long restaurantId;
     private Integer quantity;
 }
