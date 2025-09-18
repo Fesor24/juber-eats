@@ -10,7 +10,6 @@ import com.app.JuberEats.repositories.IProductRepository;
 import com.app.JuberEats.request.order.CreateOrderRequest;
 import com.app.JuberEats.response.cart.GetShoppingCartResponse;
 import com.app.JuberEats.response.cart.ShoppingCartItemResponse;
-import com.app.JuberEats.response.order.GetOrderItemResponse;
 import com.app.JuberEats.response.order.GetOrderResponse;
 import com.app.JuberEats.utils.JsonConverter;
 import com.app.JuberEats.utils.OrderProductDetail;
