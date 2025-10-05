@@ -17,6 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.List;
@@ -46,6 +47,8 @@ public class OrderService implements IOrderService{
 
         List<OrderItem> orderItems = new ArrayList<>();
 
+        BigDecimal subTotal = BigDecimal.ZERO;
+
         if(cart.getItems().isEmpty()){
             throw new NotFoundException("No product item found in cart");
         }
@@ -73,7 +76,8 @@ public class OrderService implements IOrderService{
                     .findFirst();
 
             if(productOpt.isEmpty()){
-                throw new NotFoundException("Product with ID:" + item.getProductId() + " not found");
+                throw new NotFoundException("Product with ID:" +
+                        item.getProductId() + " not found");
             }
 
             Product prd = productOpt.get();
@@ -81,6 +85,8 @@ public class OrderService implements IOrderService{
             OrderProductDetail productDetail = new OrderProductDetail();
             productDetail.setProductName(prd.getName());
             productDetail.setPrice(prd.getPrice());
+
+            subTotal.add(prd.getPrice());
 
             OrderItem orderItem = new OrderItem();
             orderItem.setQuantity(item.getQuantity());
@@ -94,11 +100,13 @@ public class OrderService implements IOrderService{
         orderAddress.setStreet(request.getAddress().getStreet());
         orderAddress.setPostCode(request.getAddress().getPostCode());
 
-        Order order = new Order();
-        order.setOrderItems(orderItems);
-        order.setDeliveryMethod(deliveryMethod);
-        order.setUserEmail("test@mail.com"); // to be changed...
-        order.setAddress(orderAddress);
+        // to be changed...
+        String userEmail = "test@mail.com";
+
+        BigDecimal totalPrice = subTotal.add(deliveryMethod.getPrice());
+
+        Order order = new Order(userEmail, subTotal, deliveryMethod, totalPrice,
+                orderItems, orderAddress);
 
         orderRepository.save(order);
 

@@ -4,8 +4,12 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -19,6 +23,19 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class Order {
+
+    public Order(String email, BigDecimal subTotal,
+                 DeliveryMethod deliveryMethod, BigDecimal totalPrice,
+                 List<OrderItem> orderItems, OrderAddress address){
+        status = OrderStatus.PENDING;
+        userEmail = email;
+        this.subTotal = subTotal;
+        this.deliveryMethod = deliveryMethod;
+        this.totalPrice = totalPrice;
+        this.orderItems = orderItems;
+        this.address = address;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,4 +61,8 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
+
+    @Column(name="created_at", nullable = false, updatable = false)
+    @CreationTimestamp
+    private Instant createdAt;
 }
