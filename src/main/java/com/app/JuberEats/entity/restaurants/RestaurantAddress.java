@@ -13,8 +13,6 @@ public class RestaurantAddress {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
-    private String description;
-    @Column
     private String street;
     @Column
     private String city;

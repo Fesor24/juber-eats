@@ -28,7 +28,7 @@ public class Product {
     @Column(precision = 19, scale = 2)
     private BigDecimal price;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 }

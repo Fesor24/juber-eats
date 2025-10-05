@@ -16,6 +16,13 @@ import java.util.List;
 @AllArgsConstructor
 @Entity(name = "restaurants")
 public class Restaurant {
+
+    public Restaurant(Long id, String name, RestaurantAddress address){
+        this.id = id;
+        this.name = name;
+        this.address = address;
+    }
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,12 +32,12 @@ public class Restaurant {
     @NotBlank
     private String name;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "restaurant_address_id") // the fk
     private RestaurantAddress address;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-    private List<Product> products = new ArrayList<>();
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Product> products;
 }
 
 // for bidirectional, mappedby can be specified in the non owning entity....
