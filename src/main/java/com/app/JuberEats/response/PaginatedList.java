@@ -12,6 +12,6 @@ import java.util.List;
 public class PaginatedList<TData> {
     private Integer pageNumber;
     private Integer pageSize;
-    private Integer totalItems;
+    private Long totalItems;
     private List<TData> items;
 }

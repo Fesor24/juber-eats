@@ -35,7 +35,6 @@ public class AppInitializer implements CommandLineRunner {
         System.out.println("Application initialized.....");
 
         seedData();
-
     }
 
     private void seedData(){

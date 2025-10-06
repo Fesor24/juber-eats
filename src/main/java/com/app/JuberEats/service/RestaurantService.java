@@ -44,7 +44,7 @@ public class RestaurantService implements IRestaurantService {
         res.setItems(restaurants);
         res.setPageNumber(request.getPageNumber());
         res.setPageSize(request.getPageSize());
-        res.setTotalItems(restaurantPage.getTotalPages());
+        res.setTotalItems(restaurantPage.getTotalElements());
 
         return res;
     }
