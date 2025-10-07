@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 
 @Data
 public class GetDeliveryMethodResponse {
+    public Long id;
     private String name;
     private String duration;
     private BigDecimal price;

@@ -26,7 +26,7 @@ import java.util.List;
 @Tag(name = "Restaurant", description = "Restaurant API endpoints")
 @RestController()
 @RequestMapping("/api")
-public class RestaurantController {
+public class RestaurantController extends BaseController {
     @Autowired
     private IRestaurantService restaurantService;
 
@@ -41,9 +41,7 @@ public class RestaurantController {
     public ResponseEntity<ResultT<PaginatedList<SearchRestaurantResponse>>> search(SearchRestaurantRequestParams request){
         PaginatedList<SearchRestaurantResponse> paginatedList = restaurantService.search(request);
 
-        ResultT<PaginatedList<SearchRestaurantResponse>> response = new ResultT<>(paginatedList);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return OK(paginatedList);
     }
 
     @Operation(summary = "Returns restaurant by an identifier",

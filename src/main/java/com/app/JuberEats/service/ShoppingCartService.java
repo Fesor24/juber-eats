@@ -45,13 +45,12 @@ public class ShoppingCartService implements IShoppingCartService {
 
         return shoppingCart
                 .map(sc -> mapper.map(sc, GetShoppingCartResponse.class))
-                .orElseThrow(() -> new NotFoundException("Cart with ID:" + cartId + " not found"));
-
+                .orElseThrow(() -> new NotFoundException("Cart with ID:" +
+                        cartId + " not found"));
     }
 
     @Override
     public GetShoppingCartResponse createOrUpdateCart(CreateShoppingCartRequest request) {
-
         if(request.getItems().isEmpty()){
             throw new BadRequestException("Add at least one item to the cart");
         }
@@ -71,19 +70,17 @@ public class ShoppingCartService implements IShoppingCartService {
         ShoppingCart cart = new ShoppingCart(request.getCartId(), new ArrayList<>());
 
         for(CreateShoppingCartItemRequest item : request.getItems()){
-
             if(item.getQuantity().equals(0)){
                 throw new BadRequestException("Quantity can not be 0");
             }
-
-
 
             Optional<Product> product = products.stream()
                     .filter(prd -> prd.getId().equals(item.getProductId()))
                     .findFirst();
 
             if(product.isEmpty()){
-                throw new NotFoundException("Product with Id: " + item.getProductId() + " not found");
+                throw new NotFoundException("Product with Id: " +
+                        item.getProductId() + " not found");
             }
 
             if(product.get().getRestaurant().getId() != item.getRestaurantId()){
@@ -97,7 +94,7 @@ public class ShoppingCartService implements IShoppingCartService {
                     prd.getRestaurant().getName(), item.getQuantity()));
         }
 
-        cacheService.save(cart.getId(), cart);
+        cacheService.save(cart.getId(), cart, Long.valueOf(24 * 60 * 2));
 
         return getCart(cart.getId());
     }

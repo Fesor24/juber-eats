@@ -5,7 +5,7 @@ import com.app.JuberEats.response.order.GetDeliveryMethodResponse;
 import com.app.JuberEats.service.IDeliveryMethodService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +15,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @Tag(name = "Delivery methods", description = "Delivery method controller")
-public class DeliveryMethodController {
+public class DeliveryMethodController extends BaseController{
 
+    @Autowired
     private IDeliveryMethodService deliveryMethodService;
 
     @Operation(summary = "Get delivery methods", description = "Endpoint to get delivery methods")
@@ -25,8 +26,6 @@ public class DeliveryMethodController {
         List<GetDeliveryMethodResponse> deliveryMethods =
                 deliveryMethodService.getDeliveryMethods();
 
-        return new ResponseEntity<>(new ResultT<>(deliveryMethods),
-                HttpStatus.OK
-        );
+        return OK(deliveryMethods);
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class CacheService implements ICacheService{
@@ -14,6 +15,11 @@ public class CacheService implements ICacheService{
     @Override
     public <T> void save(String key, T object) {
         redisTemplate.opsForValue().set(key, object);
+    }
+
+    @Override
+    public <T> void save(String key, T object, Long ttlInMinutes){
+        redisTemplate.opsForValue().set(key, object, ttlInMinutes, TimeUnit.MINUTES);
     }
 
     @Override

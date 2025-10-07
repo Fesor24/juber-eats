@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController()
 @RequestMapping("/api")
 @Tag(name = "Shopping Cart", description = "Shopping cart endpoints")
-public class ShoppingCartController {
+public class ShoppingCartController extends BaseController{
 
     @Autowired
     private IShoppingCartService shoppingCartService;
@@ -33,7 +33,7 @@ public class ShoppingCartController {
 
         GetShoppingCartResponse response = shoppingCartService.createOrUpdateCart(request);
 
-        return new ResponseEntity<>(new ResultT<>(response), HttpStatus.OK);
+        return OK(response);
     }
 
     @Operation(summary = "Get shopping cart",
@@ -42,7 +42,7 @@ public class ShoppingCartController {
     public ResponseEntity<ResultT<GetShoppingCartResponse>> getCart(@PathVariable String cartId){
         GetShoppingCartResponse cart = shoppingCartService.getCart(cartId);
 
-        return new ResponseEntity<>(new ResultT<>(cart), HttpStatus.OK);
+        return OK(cart);
     }
 
     @ApiResponses({
@@ -55,6 +55,6 @@ public class ShoppingCartController {
     public ResponseEntity<Result> deleteCart(@PathVariable String cartId){
         shoppingCartService.deleteCart(cartId);
 
-        return new ResponseEntity<>(new Result(), HttpStatus.NO_CONTENT);
+        return OK();
     }
 }

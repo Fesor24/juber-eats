@@ -8,14 +8,13 @@ import com.app.JuberEats.service.IProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController()
 @RequestMapping("/api")
 @Tag(name = "Product", description = "Product API endpoints")
-public class ProductController {
+public class ProductController extends BaseController {
 
     @Autowired
     private IProductService productService;
@@ -25,7 +24,7 @@ public class ProductController {
     public ResponseEntity<ResultT<GetProductResponse>> getById(@PathVariable Long productId){
         GetProductResponse response = productService.getById(productId);
 
-        return new ResponseEntity<>(new ResultT<>(response), HttpStatus.OK);
+        return OK(response);
     }
 
     @Operation(summary = "Create product", description = "Endpoint to create product")
@@ -33,6 +32,6 @@ public class ProductController {
     public ResponseEntity<Result> createProduct(@RequestBody CreateProductRequest request){
         productService.createProduct(request);
 
-        return new ResponseEntity<>(Result.Success(), HttpStatus.OK);
+        return OK();
     }
 }
